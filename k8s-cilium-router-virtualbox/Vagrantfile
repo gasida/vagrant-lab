@@ -49,7 +49,7 @@ Vagrant.configure("2") do |config|
       subconfig.vm.synced_folder "./", "/vagrant", disabled: true
       subconfig.vm.provision "shell", path: "https://raw.githubusercontent.com/gasida/vagrant-lab/refs/heads/main/k8s-cilium-router-virtualbox/init_cfg.sh", args: [ K8SV, CONTAINERDV]
       subconfig.vm.provision "shell", path: "https://raw.githubusercontent.com/gasida/vagrant-lab/refs/heads/main/k8s-cilium-router-virtualbox/k8s-w.sh"
-      subconfig.vm.provision "shell", path: "https://raw.githubusercontent.com/gasida/vagrant-lab/refs/heads/main/k8s-cilium-router-virtualbox/oute-add1.sh"
+      subconfig.vm.provision "shell", path: "https://raw.githubusercontent.com/gasida/vagrant-lab/refs/heads/main/k8s-cilium-router-virtualbox/route-add1.sh"
     end
   end
 
