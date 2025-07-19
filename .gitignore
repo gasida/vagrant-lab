@@ -1,0 +1,8 @@
+# Global
+*.log
+*.pub
+*.json
+.DS_Store
+
+# .vagrant folder
+.vagrant/
