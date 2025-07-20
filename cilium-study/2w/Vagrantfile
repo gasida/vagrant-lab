@@ -26,8 +26,8 @@ Vagrant.configure("2") do |config|
       subconfig.vm.network "private_network", ip: "192.168.10.100"
       subconfig.vm.network "forwarded_port", guest: 22, host: 60000, auto_correct: true, id: "ssh"
       subconfig.vm.synced_folder "./", "/vagrant", disabled: true
-      subconfig.vm.provision "shell", path: "init_cfg.sh", args: [ K8SV, CONTAINERDV ]
-      subconfig.vm.provision "shell", path: "k8s-ctr.sh", args: [ N, CILIUMV ]
+      subconfig.vm.provision "shell", path: "https://raw.githubusercontent.com/gasida/vagrant-lab/refs/heads/main/cilium-study/2w/init_cfg.sh", args: [ K8SV, CONTAINERDV ]
+      subconfig.vm.provision "shell", path: "https://raw.githubusercontent.com/gasida/vagrant-lab/refs/heads/main/cilium-study/2w/k8s-ctr.sh", args: [ N, CILIUMV ]
     end
 
 #-Worker Nodes Subnet1
@@ -47,8 +47,8 @@ Vagrant.configure("2") do |config|
       subconfig.vm.network "private_network", ip: "192.168.10.10#{i}"
       subconfig.vm.network "forwarded_port", guest: 22, host: "6000#{i}", auto_correct: true, id: "ssh"
       subconfig.vm.synced_folder "./", "/vagrant", disabled: true
-      subconfig.vm.provision "shell", path: "init_cfg.sh", args: [ K8SV, CONTAINERDV]
-      subconfig.vm.provision "shell", path: "k8s-w.sh"
+      subconfig.vm.provision "shell", path: "https://raw.githubusercontent.com/gasida/vagrant-lab/refs/heads/main/cilium-study/2w/init_cfg.sh", args: [ K8SV, CONTAINERDV]
+      subconfig.vm.provision "shell", path: "https://raw.githubusercontent.com/gasida/vagrant-lab/refs/heads/main/cilium-study/2w/k8s-w.sh"
     end
   end
 
