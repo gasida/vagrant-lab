@@ -4,7 +4,7 @@ echo ">>>> K8S Controlplane config Start <<<<"
 
 echo "[TASK 1] Initial Kubernetes"
 curl --silent -o /root/kubeadm-init-ctr-config.yaml https://raw.githubusercontent.com/gasida/vagrant-lab/refs/heads/main/cilium-study/2w/kubeadm-init-ctr-config.yaml
-kubeadm init --config="/root/kubeadm-init-ctr-config.yaml" --skip-phases=addon/kube-proxy  >/dev/null 2>&1
+kubeadm init --config="/root/kubeadm-init-ctr-config.yaml" >/dev/null 2>&1
 
 
 echo "[TASK 2] Setting kube config file"
