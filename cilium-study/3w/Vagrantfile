@@ -26,9 +26,9 @@ Vagrant.configure("2") do |config|
       subconfig.vm.network "private_network", ip: "192.168.10.100"
       subconfig.vm.network "forwarded_port", guest: 22, host: 60000, auto_correct: true, id: "ssh"
       subconfig.vm.synced_folder "./", "/vagrant", disabled: true
-      subconfig.vm.provision "shell", path: "init_cfg.sh", args: [ K8SV, CONTAINERDV ]
-      subconfig.vm.provision "shell", path: "k8s-ctr.sh", args: [ N, CILIUMV, K8SV ]
-      subconfig.vm.provision "shell", path: "route-add1.sh"
+      subconfig.vm.provision "shell", path: "https://raw.githubusercontent.com/gasida/vagrant-lab/refs/heads/main/cilium-study/3w/init_cfg.sh", args: [ K8SV, CONTAINERDV ]
+      subconfig.vm.provision "shell", path: "https://raw.githubusercontent.com/gasida/vagrant-lab/refs/heads/main/cilium-study/3w/k8s-ctr.sh", args: [ N, CILIUMV, K8SV ]
+      subconfig.vm.provision "shell", path: "https://raw.githubusercontent.com/gasida/vagrant-lab/refs/heads/main/cilium-study/3w/route-add1.sh"
     end
 
 #-Worker Nodes Subnet1
@@ -48,9 +48,9 @@ Vagrant.configure("2") do |config|
       subconfig.vm.network "private_network", ip: "192.168.10.10#{i}"
       subconfig.vm.network "forwarded_port", guest: 22, host: "6000#{i}", auto_correct: true, id: "ssh"
       subconfig.vm.synced_folder "./", "/vagrant", disabled: true
-      subconfig.vm.provision "shell", path: "init_cfg.sh", args: [ K8SV, CONTAINERDV]
-      subconfig.vm.provision "shell", path: "k8s-w.sh"
-      subconfig.vm.provision "shell", path: "route-add1.sh"
+      subconfig.vm.provision "shell", path: "https://raw.githubusercontent.com/gasida/vagrant-lab/refs/heads/main/cilium-study/3w/init_cfg.sh", args: [ K8SV, CONTAINERDV]
+      subconfig.vm.provision "shell", path: "https://raw.githubusercontent.com/gasida/vagrant-lab/refs/heads/main/cilium-study/3w/k8s-w.sh"
+      subconfig.vm.provision "shell", path: "https://raw.githubusercontent.com/gasida/vagrant-lab/refs/heads/main/cilium-study/3w/route-add1.sh"
     end
   end
 
@@ -69,7 +69,7 @@ Vagrant.configure("2") do |config|
       subconfig.vm.network "private_network", ip: "192.168.10.200"
       subconfig.vm.network "forwarded_port", guest: 22, host: 60009, auto_correct: true, id: "ssh"
       subconfig.vm.synced_folder "./", "/vagrant", disabled: true
-      subconfig.vm.provision "shell", path: "router.sh"
+      subconfig.vm.provision "shell", path: "https://raw.githubusercontent.com/gasida/vagrant-lab/refs/heads/main/cilium-study/3w/router.sh"
     end
   
 end
