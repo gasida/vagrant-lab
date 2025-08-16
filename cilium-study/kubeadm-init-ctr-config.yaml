@@ -20,3 +20,5 @@ kubernetesVersion: "K8S_VERSION_PLACEHOLDER"
 networking:
   podSubnet: "10.244.0.0/16"
   serviceSubnet: "10.96.0.0/16"
+proxy:
+  disabled: true
