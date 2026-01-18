@@ -1,0 +1,49 @@
+# Base Image  https://portal.cloud.hashicorp.com/vagrant/discover/bento/rockylinux-10.0
+BOX_IMAGE = "bento/rockylinux-10.0" # "bento/rockylinux-9"
+BOX_VERSION = "202510.26.0"
+N = 2 # max number of Worker Nodes
+
+Vagrant.configure("2") do |config|
+# ControlPlane Nodes 
+    config.vm.define "k8s-ctr" do |subconfig|
+      subconfig.vm.box = BOX_IMAGE
+      subconfig.vm.box_version = BOX_VERSION
+      subconfig.vm.provider "virtualbox" do |vb|
+        vb.customize ["modifyvm", :id, "--groups", "/K8S-Upgrade-Lab"]
+        vb.customize ["modifyvm", :id, "--nicpromisc2", "allow-all"]
+        vb.name = "k8s-ctr"
+        vb.cpus = 4
+        vb.memory = 3072 # 2048 2560 3072 4096
+        vb.linked_clone = true
+      end
+      subconfig.vm.host_name = "k8s-ctr"
+      subconfig.vm.network "private_network", ip: "192.168.10.100"
+      subconfig.vm.network "forwarded_port", guest: 22, host: "60000", auto_correct: true, id: "ssh"
+      subconfig.vm.synced_folder "./", "/vagrant", disabled: true
+      subconfig.vm.provision "shell", path: "init_cfg.sh"
+      subconfig.vm.provision "shell", path: "k8s-ctr.sh"
+    end
+
+# Worker Nodes
+  (1..N).each do |i|
+    config.vm.define "k8s-w#{i}" do |subconfig|
+      subconfig.vm.box = BOX_IMAGE
+      subconfig.vm.box_version = BOX_VERSION
+      subconfig.vm.provider "virtualbox" do |vb|
+        vb.customize ["modifyvm", :id, "--groups", "/K8S-Upgrade-Lab"]
+        vb.customize ["modifyvm", :id, "--nicpromisc2", "allow-all"]
+        vb.name = "k8s-w#{i}"
+        vb.cpus = 2
+        vb.memory = 2048
+        vb.linked_clone = true
+      end
+      subconfig.vm.host_name = "k8s-w#{i}"
+      subconfig.vm.network "private_network", ip: "192.168.10.10#{i}"
+      subconfig.vm.network "forwarded_port", guest: 22, host: "6000#{i}", auto_correct: true, id: "ssh"
+      subconfig.vm.synced_folder "./", "/vagrant", disabled: true
+      subconfig.vm.provision "shell", path: "init_cfg.sh"
+      subconfig.vm.provision "shell", path: "k8s-w.sh"
+    end
+  end
+
+end
