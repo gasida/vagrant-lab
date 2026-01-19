@@ -44,7 +44,12 @@ cat << EOF >> /etc/hosts
 EOF
 
 
-echo "[TASK 6] Install Containerd"
+echo "[TASK 6] Delete default routing - enp0s9 NIC"
+nmcli connection modify enp0s9 ipv4.never-default yes
+nmcli connection up enp0s9 >/dev/null 2>&1
+
+
+echo "[TASK 7] Install Containerd"
 dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo >/dev/null 2>&1
 dnf install -y -q containerd.io-2.1.5-1.el10
 containerd config default > /etc/containerd/config.toml
@@ -53,7 +58,7 @@ systemctl daemon-reload
 systemctl enable --now containerd >/dev/null 2>&1
 
 
-echo "[TASK 7] Install kubeadm kubelet kubectl"
+echo "[TASK 8] Install kubeadm kubelet kubectl"
 cat << EOF > /etc/yum.repos.d/kubernetes.repo
 [kubernetes]
 name=Kubernetes
