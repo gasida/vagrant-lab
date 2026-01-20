@@ -51,12 +51,12 @@ chown $(id -u):$(id -g) /root/.kube/config
 
 
 echo "[TASK 3] Install Helm"
-curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | DESIRED_VERSION=v3.18.6 bash
+curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | DESIRED_VERSION=v3.18.6 bash >/dev/null 2>&1
 
 
 echo "[TASK 4] Install kubecolor"
 dnf install -y -q 'dnf-command(config-manager)' >/dev/null 2>&1
-dnf config-manager --add-repo https://kubecolor.github.io/packages/rpm/kubecolor.repo
+dnf config-manager --add-repo https://kubecolor.github.io/packages/rpm/kubecolor.repo >/dev/null 2>&1
 dnf install -y -q kubecolor >/dev/null 2>&1
 
 
