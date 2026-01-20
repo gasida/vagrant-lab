@@ -14,9 +14,11 @@ setenforce 0
 sed -i 's/^SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
 
 
-echo "[TASK 3] Disable and turn off SWAP"
+echo "[TASK 3] Disable and turn off SWAP & Delete swap partitions"
 swapoff -a
 sed -i '/swap/d' /etc/fstab
+sfdisk --delete /dev/sda 2
+partprobe /dev/sda >/dev/null 2>&1
 
 
 echo "[TASK 4] Config kernel & module"
@@ -43,11 +45,9 @@ cat << EOF >> /etc/hosts
 192.168.10.102 k8s-w2
 EOF
 
-
 echo "[TASK 6] Delete default routing - enp0s9 NIC" # setenforce 0 설정 필요
 nmcli connection modify enp0s9 ipv4.never-default yes
 nmcli connection up enp0s9 >/dev/null 2>&1
-
 
 echo "[TASK 7] Install Containerd"
 dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo >/dev/null 2>&1
