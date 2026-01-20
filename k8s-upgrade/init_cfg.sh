@@ -44,7 +44,7 @@ cat << EOF >> /etc/hosts
 EOF
 
 
-echo "[TASK 6] Delete default routing - enp0s9 NIC"
+echo "[TASK 6] Delete default routing - enp0s9 NIC" # setenforce 0 설정 필요
 nmcli connection modify enp0s9 ipv4.never-default yes
 nmcli connection up enp0s9 >/dev/null 2>&1
 
