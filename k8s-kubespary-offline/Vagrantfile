@@ -1,0 +1,49 @@
+# Base Image  https://portal.cloud.hashicorp.com/vagrant/discover/bento/rockylinux-10.0
+BOX_IMAGE = "bento/rockylinux-10.0" # "bento/rockylinux-9"
+BOX_VERSION = "202510.26.0"
+N = 2 # max number of Node
+
+Vagrant.configure("2") do |config|
+
+# Nodes 
+  (1..N).each do |i|
+    config.vm.define "k8s-node#{i}" do |subconfig|
+      subconfig.vm.box = BOX_IMAGE
+      subconfig.vm.box_version = BOX_VERSION
+      subconfig.vm.provider "virtualbox" do |vb|
+        vb.customize ["modifyvm", :id, "--groups", "/Kubespary-offline-Lab"]
+        vb.customize ["modifyvm", :id, "--nicpromisc2", "allow-all"]
+        vb.name = "k8s-node#{i}"
+        vb.cpus = 4
+        vb.memory = 2048
+        vb.linked_clone = true
+      end
+      subconfig.vm.host_name = "k8s-node#{i}"
+      subconfig.vm.network "private_network", ip: "192.168.10.1#{i}"
+      subconfig.vm.network "forwarded_port", guest: 22, host: "6000#{i}", auto_correct: true, id: "ssh"
+      subconfig.vm.synced_folder "./", "/vagrant", disabled: true
+      subconfig.vm.provision "shell", path: "init_cfg.sh" , args: [ N ]
+    end
+  end
+
+# Admin Node
+    config.vm.define "admin" do |subconfig|
+      subconfig.vm.box = BOX_IMAGE
+      subconfig.vm.box_version = BOX_VERSION
+      subconfig.vm.provider "virtualbox" do |vb|
+        vb.customize ["modifyvm", :id, "--groups", "/Kubespary-offline-Lab"]
+        vb.customize ["modifyvm", :id, "--nicpromisc2", "allow-all"]
+        vb.name = "admin"
+        vb.cpus = 4
+        vb.memory = 2048
+        vb.linked_clone = true
+      end
+      subconfig.vm.host_name = "admin"
+      subconfig.vm.network "private_network", ip: "192.168.10.10"
+      subconfig.vm.network "forwarded_port", guest: 22, host: "60000", auto_correct: true, id: "ssh"
+      subconfig.vm.synced_folder "./", "/vagrant", disabled: true
+      subconfig.vm.disk :disk, size: "120GB", primary: true # https://developer.hashicorp.com/vagrant/docs/disks/usage
+      subconfig.vm.provision "shell", path: "admin.sh" , args: [ N ]
+    end
+
+end
