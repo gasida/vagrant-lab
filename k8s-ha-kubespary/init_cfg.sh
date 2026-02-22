@@ -49,8 +49,6 @@ nmcli connection up enp0s9 >/dev/null 2>&1
 
 
 echo "[TASK 7] Setting SSHD"
-echo "root:qwe123" | chpasswd
-
 cat << EOF >> /etc/ssh/sshd_config
 PermitRootLogin yes
 PasswordAuthentication yes
