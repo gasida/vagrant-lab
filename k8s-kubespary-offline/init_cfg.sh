@@ -25,7 +25,6 @@ echo "[TASK 4] Config kernel & module"
 cat << EOF > /etc/modules-load.d/k8s.conf
 overlay
 br_netfilter
-vxlan
 EOF
 modprobe overlay >/dev/null 2>&1
 modprobe br_netfilter >/dev/null 2>&1
@@ -50,8 +49,7 @@ nmcli connection up enp0s9 >/dev/null 2>&1
 
 
 echo "[TASK 7] Setting SSHD"
-echo "root:qwe123" | chpasswd
-
+#echo "root:qwe123" | chpasswd
 cat << EOF >> /etc/ssh/sshd_config
 PermitRootLogin yes
 PasswordAuthentication yes

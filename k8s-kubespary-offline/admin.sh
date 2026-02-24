@@ -46,8 +46,7 @@ xfs_growfs /dev/sda3 >/dev/null 2>&1 # df -hT /
 
 
 echo "[TASK 9] Setting SSHD"
-echo "root:qwe123" | chpasswd
-
+#echo "root:qwe123" | chpasswd
 cat << EOF >> /etc/ssh/sshd_config
 PermitRootLogin yes
 PasswordAuthentication yes
@@ -57,10 +56,10 @@ systemctl restart sshd >/dev/null 2>&1
 
 echo "[TASK 10] Setting SSH Key"
 ssh-keygen -t rsa -N "" -f /root/.ssh/id_rsa >/dev/null 2>&1
-sshpass -p 'qwe123' ssh-copy-id -o StrictHostKeyChecking=no root@192.168.10.10  >/dev/null 2>&1  # cat /root/.ssh/authorized_keys
+sshpass -p 'vagrant' ssh-copy-id -o StrictHostKeyChecking=no root@192.168.10.10  >/dev/null 2>&1  # cat /root/.ssh/authorized_keys
 ssh -o StrictHostKeyChecking=no root@admin-lb hostname >/dev/null 2>&1
-for (( i=1; i<=$1; i++  )); do sshpass -p 'qwe123' ssh-copy-id -o StrictHostKeyChecking=no root@192.168.10.1$i >/dev/null 2>&1 ; done
-for (( i=1; i<=$1; i++  )); do sshpass -p 'qwe123' ssh -o StrictHostKeyChecking=no root@k8s-node$i hostname >/dev/null 2>&1 ; done
+for (( i=1; i<=$1; i++  )); do sshpass -p 'vagrant' ssh-copy-id -o StrictHostKeyChecking=no root@192.168.10.1$i >/dev/null 2>&1 ; done
+for (( i=1; i<=$1; i++  )); do sshpass -p 'vagrant' ssh -o StrictHostKeyChecking=no root@k8s-node$i hostname >/dev/null 2>&1 ; done
 
 
 echo "[TASK 11] Install K9s"
